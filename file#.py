@@ -1,19 +1,16 @@
 import pandas as pd
 
-# Load the CSV file into a pandas DataFrame
-# Replace 'your_file.csv' with the path to your CSV file
-df = pd.read_csv('combined_data_#.csv')
+# Load the CSV file
+file_path = "combined_data_#.csv"  
+df = pd.read_csv(file_path)
 
-# Define the keyword you are looking for
-keyword = 'meta-analysis'
-
-# Filter rows where the title contains the keyword (case-insensitive)
-matching_articles = df[df['Article Title'].str.contains(keyword, case=False, na=False)]
-
-# Output the links of the articles that match the keyword
-if not matching_articles.empty:
-    print("Articles containing the keyword '{}':".format(keyword))
-    for link in matching_articles['Article Link']:
-        print(link)
+# Ensure columns exist
+if 'Article Title' in df.columns and 'Article Link' in df.columns:
+    # Filter rows where the title contains "meta-analysis" (case-insensitive)
+    filtered = df[df['Article Title'].str.contains("meta-analysis", case=False, na=False)]
+    
+    # Output results
+    for _, row in filtered.iterrows():
+        print(f"{row['Article Title']}: {row['Article Link']}")
 else:
-    print(f"No articles found with the keyword '{keyword}' in the title.")
+    print("Error: The CSV file must contain 'title' and 'link' columns.")
